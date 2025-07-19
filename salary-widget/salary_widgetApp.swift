@@ -35,6 +35,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Published var selectedDays: Set<Int> = [1, 2, 3, 4, 5] { // Mon-Fri
         didSet { updateStatusBarView() }
     }
+    @Published var selectedCurrency: String = "USD" {
+        didSet { updateStatusBarView() }
+    }
+    
+    var currencySymbol: String {
+        switch selectedCurrency {
+        case "USD": return "$"
+        case "EUR": return "€"
+        case "GBP": return "£"
+        case "JPY": return "¥"
+        case "CNY": return "¥"
+        case "KRW": return "₩"
+        case "INR": return "₹"
+        case "SGD": return "$"
+        default: return "$"
+        }
+    }
+    
+    var availableCurrencies: [String] {
+        ["USD", "EUR", "GBP", "JPY", "CNY", "KRW", "INR", "SGD"]
+    }
     
     var workingDaysThisMonth: Int {
         calculateWorkingDaysInCurrentMonth()
@@ -104,21 +125,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         let formatter = DateFormatter()
         formatter.timeStyle = .medium
         print("🔄 Status Bar Update at \(formatter.string(from: now))")
-        print("   Monthly Wage: ¥\(monthlyWage)")
+        print("   Monthly Wage: \(currencySymbol)\(monthlyWage)")
         print("   Working Days This Month: \(workingDaysThisMonth)")
         print("   Start Time: \(startTime)")
         print("   Off-duty Time: \(offDutyTime)")
         print("   Selected Days: \(selectedDays)")
-        print("   Daily Wage: ¥\(dailyWage)")
+        print("   Currency: \(selectedCurrency) (\(currencySymbol))")
+        print("   Daily Wage: \(currencySymbol)\(dailyWage)")
         print("   Progress: \(String(format: "%.1f", progress * 100))%")
-        print("   Today Earnings: ¥\(todayEarnings)")
+        print("   Today Earnings: \(currencySymbol)\(todayEarnings)")
         print("   Progress Width: \(progressWidth)px")
         
         // Prepare text content
         let progressText = "\(Int(progress * 100))%"
         let earningsText = todayEarnings >= 1000 ? 
-            "¥\(String(format: "%.1fk", todayEarnings / 1000))" : 
-            "¥\(Int(todayEarnings))"
+            "\(currencySymbol)\(String(format: "%.1fk", todayEarnings / 1000))" : 
+            "\(currencySymbol)\(Int(todayEarnings))"
         let combinedText = "\(progressText) \(earningsText)"
         
         // Calculate required width dynamically

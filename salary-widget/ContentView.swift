@@ -49,17 +49,28 @@ struct SalarySettingsSection: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SectionHeader(title: "薪资设置")
+            SectionHeader(title: "Salary Settings")
             
             VStack(spacing: 12) {
-                SettingRow(title: "月薪资", value: "\(Int(appDelegate.monthlyWage))(元)") {
+                SettingRow(title: "Currency", value: appDelegate.selectedCurrency) {
+                    Picker("", selection: $appDelegate.selectedCurrency) {
+                        ForEach(appDelegate.availableCurrencies, id: \.self) { currency in
+                            Text("\(currency) (\(getCurrencySymbol(for: currency)))")
+                                .tag(currency)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .frame(width: 120)
+                }
+                
+                SettingRow(title: "Monthly Salary", value: "\(appDelegate.currencySymbol)\(Int(appDelegate.monthlyWage))") {
                     TextField("", value: $appDelegate.monthlyWage, format: .number)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 100)
                 }
                 
-                SettingRow(title: "本月工作天数", value: "\(appDelegate.workingDaysThisMonth)天") {
-                    Text("\(appDelegate.workingDaysThisMonth)天")
+                SettingRow(title: "Working Days This Month", value: "\(appDelegate.workingDaysThisMonth) days") {
+                    Text("\(appDelegate.workingDaysThisMonth) days")
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
@@ -166,6 +177,20 @@ struct DayButton: View {
                 .cornerRadius(6)
         }
         .buttonStyle(.plain)
+    }
+}
+
+func getCurrencySymbol(for currency: String) -> String {
+    switch currency {
+    case "USD": return "$"
+    case "EUR": return "€"
+    case "GBP": return "£"
+    case "JPY": return "¥"
+    case "CNY": return "¥"
+    case "KRW": return "₩"
+    case "INR": return "₹"
+    case "SGD": return "$"
+    default: return "$"
     }
 }
 
