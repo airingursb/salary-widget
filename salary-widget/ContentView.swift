@@ -26,7 +26,7 @@ struct SettingsView: View {
             .padding(.top, 20)
             .padding(.bottom, 10)
             
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 20) {
                     // 薪资设置
                     SalarySettingsSection(appDelegate: appDelegate)
@@ -38,7 +38,8 @@ struct SettingsView: View {
                 .padding(.bottom, 20)
             }
         }
-        .frame(width: 400, height: 600)
+        .frame(width: 400)
+        .frame(maxHeight: 450)
         .background(Color(NSColor.windowBackgroundColor))
     }
 }
@@ -57,10 +58,10 @@ struct SalarySettingsSection: View {
                         .frame(width: 100)
                 }
                 
-                SettingRow(title: "工作天数", value: "\(Int(appDelegate.workingDays))天") {
-                    TextField("", value: $appDelegate.workingDays, format: .number)
-                        .textFieldStyle(.roundedBorder)
-                        .frame(width: 60)
+                SettingRow(title: "本月工作天数", value: "\(appDelegate.workingDaysThisMonth)天") {
+                    Text("\(appDelegate.workingDaysThisMonth)天")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
                 }
             }
         }

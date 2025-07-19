@@ -26,9 +26,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Published var monthlyWage: Double = 10000 {
         didSet { updateStatusBarView() }
     }
-    @Published var workingDays: Double = 22 {
-        didSet { updateStatusBarView() }
-    }
     @Published var startTime: String = "10:00" {
         didSet { updateStatusBarView() }
     }
@@ -39,8 +36,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         didSet { updateStatusBarView() }
     }
     
+    var workingDaysThisMonth: Int {
+        calculateWorkingDaysInCurrentMonth()
+    }
+    
     var dailyWage: Double {
-        monthlyWage / workingDays
+        let workingDays = workingDaysThisMonth
+        return workingDays > 0 ? monthlyWage / Double(workingDays) : 0
     }
     
     var hourlyWage: Double {
@@ -66,7 +68,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     private func createPopover() {
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 400, height: 600)
+        popover.contentSize = NSSize(width: 400, height: 500)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: SettingsView().environmentObject(self))
     }
@@ -103,7 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         formatter.timeStyle = .medium
         print("🔄 Status Bar Update at \(formatter.string(from: now))")
         print("   Monthly Wage: ¥\(monthlyWage)")
-        print("   Working Days: \(workingDays)")
+        print("   Working Days This Month: \(workingDaysThisMonth)")
         print("   Start Time: \(startTime)")
         print("   Off-duty Time: \(offDutyTime)")
         print("   Selected Days: \(selectedDays)")
@@ -222,5 +224,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private func parseTime(_ timeString: String) -> (Int, Int) {
         let components = timeString.split(separator: ":").map { Int($0) ?? 0 }
         return (components.count >= 2 ? components[0] : 0, components.count >= 2 ? components[1] : 0)
+    }
+    
+    private func calculateWorkingDaysInCurrentMonth() -> Int {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // Get the current month and year
+        guard let monthStart = calendar.dateInterval(of: .month, for: now)?.start,
+              let monthEnd = calendar.dateInterval(of: .month, for: now)?.end else {
+            return 0
+        }
+        
+        var workingDays = 0
+        var currentDate = monthStart
+        
+        // Iterate through each day of the month
+        while currentDate < monthEnd {
+            let weekday = calendar.component(.weekday, from: currentDate)
+            let currentWeekday = weekday == 1 ? 7 : weekday - 1 // Convert to Mon=1, Sun=7
+            
+            // Check if this day is in the selected working days
+            if selectedDays.contains(currentWeekday) {
+                workingDays += 1
+            }
+            
+            // Move to next day
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? monthEnd
+        }
+        
+        return workingDays
     }
 }
