@@ -27,24 +27,12 @@
 		9D474EA32E2B7A7500891BEF /* salary-widget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "salary-widget.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D474EB72E2B7A7600891BEF /* salary-widgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "salary-widgetTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D474EC12E2B7A7600891BEF /* salary-widgetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "salary-widgetUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D474EFC2E2B81C900891BEF /* salary-widget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "salary-widget.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9D474EC92E2B7A7600891BEF /* Exceptions for "salary-widget" folder in "salary-widget" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 9D474EA22E2B7A7500891BEF /* salary-widget */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9D474EA52E2B7A7500891BEF /* salary-widget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				9D474EC92E2B7A7600891BEF /* Exceptions for "salary-widget" folder in "salary-widget" target */,
-			);
 			path = "salary-widget";
 			sourceTree = "<group>";
 		};
@@ -101,6 +89,13 @@
 				9D474EA32E2B7A7500891BEF /* salary-widget.app */,
 				9D474EB72E2B7A7600891BEF /* salary-widgetTests.xctest */,
 				9D474EC12E2B7A7600891BEF /* salary-widgetUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D474EFD2E2B81C900891BEF /* Products */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,6 +206,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9D474EA42E2B7A7500891BEF /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9D474EFD2E2B81C900891BEF /* Products */;
+					ProjectRef = 9D474EFC2E2B81C900891BEF /* salary-widget.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9D474EA22E2B7A7500891BEF /* salary-widget */,
